@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Wstęp do Shiny</title>
+    <meta charset="utf-8">
+    <link href="libs/remark-css/example.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/idash.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Wstęp do Shiny
+## PAZUR 23
+
+---
+
+
+
+background-image: url('www/img/logo_black.png')
+background-size: 50%
+
+???
+- Jesteśmy firmą organizującą szkolenia Data Science   
+- Nasza działaność póki co skupia się na R
+
+---
+# Tematy szkoleń
+
+- Wstęp do R
+- Przetwarzanie danych w R
+- Techniki wizualizacji danych w R
+- Techniki raportowania w R
+- Shiny - tworzenie interaktywnych aplikacji w R
+- Purr w R
+- CSS &amp; JavaScript w Shiny
+- Web scraping w R
+- Rcpp
+
+???
+- Jesteśmy firmą organizującą szkolenia Data Science   
+- Nasza działaność póki co skupia się na R
+
+---
+
+# Czym jest Shiny?
+
+--
+
+- Framework do tworzenia aplikacji webowych
+
+--
+
+- Nie wymaga znajmości języków innych niż R
+
+--
+
+- Pozwala na szybkie udostępnienie wyników analizy w przykuwającej oko formie
+
+---
+
+# Dataset
+
+
+```r
+library(nycflights13)
+```
+
+- __flights__ - ramka zawierająca dane na temat lotów rozpoczynających się na lotnisku JFK (Nowy Jork) w 2013 roku. Dostępne dane to między innymi: data i godzina wylotu oraz przylotu, lotnisko docelowe, odległość, opóźnienie, czas lotu oraz kod przewoźnika.
+- __airlines__ - ramka zawierająca kod przewoźnika i jego pełną nazwę.
+
+---
+
+class: inverse, center, middle
+
+# Demo gotowej aplikacji
+
+???
+
+Przełączyć się na R'a
+
+---
+
+# Plan na dzisiaj?
+
+--
+
+- Struktura aplikacji
+
+--
+
+- Budowa interfejsu aplikacji
+
+--
+
+- Pizza
+
+--
+
+- Obsługa interfejsu aplikacji
+
+--
+
+- Piwo
+
+---
+
+# Sprawy techniczne
+
+### Praca na komputerze stacjonarnym (rekomendowana)
+- Wszystkie niezbędne pliki i paczki są wrzucone na komputery stacjonarne.
+
+### Praca na własnym laptopie (na własną odpowiedzialność)
+- Niezbędne paczki: shiny, DT, nycflights13, dplyr, ggplot2, ggthemes
+- Prezentacja dostępna pod adresem: ???
+- Projekt do pobrania z: __https://github.com/Nicolabo/szkolenie_shiny_skeleton__
+
+---
+class: inverse, center, middle
+
+# Zaczynamy!
+
+---
+
+class: center, middle
+
+# Struktura Projektu
+### ui.R &amp; server.R
+
+---
+
+class: inverse, center, middle
+
+# Budowa interfejsu użytkownika
+---
+
+# Podstawowy layout
+
+
+```r
+fluidPage(
+  titlePanel("Moja pierwsza apka w Shiny"),
+
+  sidebarLayout(
+    sidebarPanel("Panel boczny"
+      # Tutaj znajdą się elementy panelu bocznego             
+    ),
+    mainPanel("Panel główny"
+      # Tutaj znajdą się elementy panelu głównego           
+    )
+  )
+)
+```
+
+???
+
+Koniecznie wspomnieć o przecinku
+
+---
+
+# Funkcje tworzące statyczne elementy interfejsu
+
+- `titlePanel()`
+- `sidebarLayout()`
+- `sidebarPanel()`
+- `mainPanel()`
+- `tabsetPanel()`
+
+Pełna lista dostępnych funkcji: https://shiny.rstudio.com/reference/shiny/latest/ (sekcja UI Layout)   
+
+---
+
+
+# Funkcje tworzące interaktywne elementy interfejsu
+
+- `textInput()`
+- `numericInput()`
+- `selectInput()`
+- `sliderInput()`
+- `checkboxInput()`
+- `dateInput()`
+- `fileInput()`
+
+Pełna lista dostępnych funkcji: https://shiny.rstudio.com/reference/shiny/latest/ (sekcja UI inputs)   
+Demo: http://shiny.rstudio.com/gallery/widget-gallery.html
+
+---
+
+# Typowa składnia
+
+
+```r
+selectInput(
+  inputId,
+  label,
+  choices,
+  selected = NULL,
+  multiple = FALSE,
+  selectize = TRUE,
+  width = NULL,
+  size = NULL
+)
+```
+
+---
+# Przykład 
+
+
+```r
+selectInput(
+  inputId = "kolor",
+  label = "Kolor oczu:",
+  choices = list("Zielone", "Brązowe", "Niebieskie")
+  # Reszta argumentów przyjmie wartości domyślne
+)
+```
+
+&lt;img src='www/img/select_input_screenshot.png' height = "200"/&gt;
+---
+
+class: inverse, medium-text
+
+# Zadanie 1 (15 minut)
+.pull-left[
+1. Dodaj do panelu bocznego możliwość wyboru linii lotniczej z listy rozwijanej. Lista powinna dawać możliwość wyboru więcej niż jednej liniii naraz.
+Wskazówka: nazwy linii lotniczych znajdują się w `chosenCarrier$name`
+2. Dodaj slider, na którym można określić dwie wartośći z przedziału od 0 do 1000.
+3. Dodaj również pole numeryczne. Będzie ono oznaczało minimalny dystans lotów jakie w danej chwili chcemy brać pod uwagę.
+]
+
+.pull-right[
+&lt;img src='www/img/task1_completed.png' height = "400"/&gt;
+]
+
+---
+# Tabset panel
+
+
+```r
+tabsetPanel(
+    tabPanel("Tab 1"),
+    tabPanel("Tab 2")
+  )
+```
+
+&lt;img src='www/img/tab_panel_screenshot.png' height = "200"/&gt;
+---
+
+class: inverse
+
+# Zadanie 2 (3 minuty)
+Dodaj tabset panel zawierający dwa taby do głównego panelu aplkacji.
+   
+&lt;img src='www/img/tab_panel_screenshot2.png' height = "100"/&gt;
+---
+
+class: inverse, center, middle
+
+# Komunikacja na linii &lt;br&gt; serwer -&gt; interfejs
+
+---
+
+# Komunikacja
+
+.pull-left[
+## ui.R
+- `plotOutput()`
+- `textOutput()`
+- `dataTableOutput()`
+   
+
+```r
+plotOutput('wykres1')
+```
+
+]
+
+.pull-right[
+## server.R
+- `renderPlot()`
+- `renderText()`
+- ?
+   
+
+```r
+output$wykres1 &lt;-
+  renderPlot({
+    # Kod generujący wykres
+  })
+```
+]
+
+---
+
+class: center, middle
+
+# Dodanie statycznego wykresu do aplikacji
+
+---
+
+class: inverse, center, middle
+
+# PIZZA!
+
+---
+
+class: inverse, center, middle
+
+# Komunikacja na linii &lt;br&gt; interfejs -&gt; serwer
+
+---
+
+# Reaktywność w dwóch krokach
+
+---
+
+# Komunikacja
+
+.pull-left[
+## ui.R
+- `selectInput(inputId)`
+- `sliderInput(inputId)`
+- `numericInput(inputId)`
+
+
+```r
+selectInput(
+  inputId = "carrierName"
+  )
+```
+
+]
+
+--
+
+.pull-right[
+## server.R
+- `input$inputId`
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+
+```r
+input$carrierName
+```
+]
+
+--
+
+Ważne: wartości wejściowe `input$` działają tylko wewnątrz funkcji z rodziny `render*`. 
+---
+
+class: center, middle
+
+# Budowanie obiektu tekstowego z wartością wejściową (input)
+
+---
+
+# Powtórka z przetwarzania danych
+
+1.Filtrowanie danych - dataset iris
+
+--
+
+* wiersze dla których kolumna `Species` zawiera `setosa`:
+
+--
+
+
+```r
+filter(iris, Species == "setosa")
+```
+
+--
+
+* wiersze dla których kolumna `Species` zawiera `setosa` albo `versicolor`:
+
+--
+
+
+```r
+filter(iris, Species %in% c("setosa", "versicolor"))
+```
+
+--
+
+2.Wyznaczanie procentowego udziału opóźnionych lotów
+--
+`$$\frac{\text{Ilość opóźnionych lotów powyżej określonego dystansu}}{\text{Ilość wszystkich lotów powyżej określonego dystansu}}$$`
+
+---
+
+class: inverse, medium-text
+
+# Zadanie 3 (10 minut)
+.pull-left[
+Modyfikuj `renderPlot` tak, aby wykres reagował na zmiany w panelu bocznym `sidebarPanel`.
+1. Rozbuduj dataframe'y `tmpFlights` i `aggDelayFlights` uwzględniając obiekty `input`.
+2. Zaktualizuj barplot* - udział opóźnionych lotów w ciągu dnia __ze względu na przewoźnika__.
+
+`*` wykres po prawej prezentuje udział wszystkich opóźnionych lotów w ciągu dnia dla przewoźnika `United Air Lines Inc.` dla lotów o dystansie dłuższym niż 500 mil.
+]
+
+.pull-right[
+&lt;img src='www/img/adjust_inputs.png'/&gt;
+]
+
+---
+
+class: center, middle
+
+#pakiet DT
+
+---
+
+#pakiet DT
+
+--
+
+Funkcja `datatable()` tworzy interaktywną tabelę.
+
+--
+
+####Komunikacja w shiny
+
+--
+
+
+`renderDataTable()`
+
+--
+
+`dataTableOutput()`
+
+---
+
+class: inverse, medium-text
+
+# Zadanie 4 (7 minut)
+.pull-left[
+Stwórz nowy obiekt `datatable` w zakładce `Explore data`. Uwzględnij wszystkie obiekty `input`, tak aby tabela była responsywna tj. aby reagowała na zmiany w panelu bocznym.
+]
+
+.pull-right[
+&lt;img src='www/img/datatable.png'/&gt;
+]
+
+---
+
+class: center, middle
+
+#funkcja reactive() - wyrażenia/obiekty reaktywne
+
+---
+
+#reactive()
+
+1. 
+---
+
+class: inverse, medium-text
+
+# Zadanie 5 (7 minut)
+Przebuduj strukturę pliku `server.R` tak aby uwzględniała koncepcję `reactive()`. Pozbądz się dublowania kodu tam gdzie to możliwe.
+
+---
+
+class: center, middle
+
+#Tworzenie interfejsu z poziomu serwera
+
+---
+
+#Tworzenie interfejsu
+
+Możliwość budowania interfejsu po stronie serwera za pomocą funkcji `renderUI()`.
+
+--
+
+Na przykład
+
+--
+
+
+```r
+renderUI(
+  textInput(inputId, label = "Label")
+)
+```
+---
+
+class: inverse, medium-text
+
+# Zadanie 6 (10 minut)
+.pull-left[
+Używając koncepcji `renderUI` przebuduj slider tak, aby pokazywał maksymalną wartość opóźnienia w dataframie `modFlights`. Wartością minimalną niech będzie wartość 0.
+]
+
+.pull-right[
+&lt;img src='www/img/renderUI.png' height = "250"/&gt;
+]
+
+---
+
+class: inverse, medium-text
+
+# Zadanie 7 (10 minut)
+.pull-left[
+Przebuduj slider na bazie `renderUI` tak, aby pokazywał maksymalną wartość opóźnienia w zależności od wybranych przewoźników z listy. Wartością minimalną niech będzie wartość 0.
+]
+
+.pull-right[
+&lt;img src='www/img/renderUI_reactive.png' height = "250"/&gt;
+]
+
+---
+class: inverse, center, middle
+
+# Pełne szkolenie 17-19 Listopada 
+### __30% zniżki__ dla uczestników dzisiejszego szkolenia
+### https://idash.pl/20171117_shiny_so.php
+
+---
+class: inverse
+background-image: url('www/img/logo_white.png')
+background-size: 50%
+
+???
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {window.dispatchEvent(new Event('resize'));});
+(function() {var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler"); if (!r) return; s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }"; d.head.appendChild(s);})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

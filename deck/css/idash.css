@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&subset=latin-ext');
+
+body {
+    font-family: 'Open Sans';
+}
+
+h1, h2, h3 {
+    font-family: 'Open Sans';
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.inverse {
+    background-color: #000;
+}
+
+.title-slide {
+  background-image: url('../www/img/logo_white.png');
+  background-size: 25%;
+  background-position: 49% 20%; 
+}
+
+.remark-slide-content {
+  font-size:26px;
+}
+
+.medium-text {
+  font-size:24px;
+}
+
+.remark-slide-content ul, .remark-slide-content p {
+}
+
+.remark-code {
+  font-size:26px !important;
+}
+
+a {
+  color: #0cb4ce;
+}
